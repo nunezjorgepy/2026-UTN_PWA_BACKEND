@@ -85,6 +85,9 @@ class AuthService {
         if (!user) {
             throw new ServerError('Usuario no encontrado', 404);
         }
+        if (!user.email_verified) {
+            throw new ServerError('El usuario no ha verificado su correo', 401);
+        }
         const is_same_password = await bcrypt.compare(password, user.password)
         if (!is_same_password) {
             throw new ServerError('Contraseña incorrecta', 401);
